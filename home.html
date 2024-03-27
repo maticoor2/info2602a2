@@ -1,0 +1,89 @@
+{% extends "layout.html" %}
+
+<!-- Matthew Phillips 816032689 -->
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block page %}
+Home
+{% endblock %}
+
+{% block link %}
+<ul id="nav-mobile" class="right">
+    <li><a href="/logout">Logout</a></li>
+</ul>
+{% endblock %}
+
+{% block styles %}
+    td{
+        padding: 2px;
+    }
+
+    .collection .collection-item.active{
+        background-color: #E53935;
+    }
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col m3 list-container collection" style="max-height: 88vh;">
+        {% for pokemon in pokemons %}
+        <a href="{{ url_for('home_page', pokemon_id=pokemon.id) }}" id="poke-{{ pokemon.id }}" class="collection-item {% if pokemon.id == selected_pokemon.id %}active{% endif %}">{{ pokemon.name }}</a>
+        {% endfor %}
+    </div>
+
+    <div class="col m3">
+        <p class="text-center">Selected Pokemon</p>
+        <div id="pokemon-detail">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{{ selected_pokemon.id }}.png" alt="{{ selected_pokemon.name }}">
+
+            <span class="card-title"></span> 
+            <p>Type1: {{ selected_pokemon.name }}</p>
+            <p>Type1: {{ selected_pokemon.type1 }}</p>
+            <p>Type2: {{ selected_pokemon.type2 }}</p>
+            <p>Weight: {{ selected_pokemon.weight }}</p>
+            <p>Height: {{ selected_pokemon.height }}</p>
+
+            <!--fix CaptureBtn -->
+            <form action="{{ url_for('capture_action', pokemon_id=selected_pokemon.id) }}" method="post">
+                <label for="pokemon_name">Pokemon Name:</label>
+                <input type="text" id="pokemon_name" name="pokemon_name" required> 
+                <button type="submit">Capture</button> 
+             </form>
+
+         </div> 
+     </div>
+
+    <div class="col m6">
+        <form action="{{ url_for('capture_action', pokemon_id=selected_pokemon.id) }}" method="post">
+            <label for="pokemon_name">Pokemon Name:</label>
+            <button type="text" CaptureBtn="pokemon_name" name="pokemon_name" required>
+            <button type="submit" value="Capture">
+        </form>
+    </div>
+</div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Pokemon Name</th>
+                    <th>Captured Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pokemon in captured_pokemons %}
+                <tr>
+                    <td>{{ pokemon.name }}</td>
+                    <td>{{ selected_pokemon.name }}</td>
+            
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
